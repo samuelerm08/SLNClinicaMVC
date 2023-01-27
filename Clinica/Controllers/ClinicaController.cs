@@ -3,6 +3,7 @@ using Clinica.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Clinica.Controllers
 {
@@ -84,17 +85,12 @@ namespace Clinica.Controllers
 
         [HttpPost]
         public ActionResult Edit(Medico m)
-        {
-            var medicoCambio = context.Medicos.Find(m.MedicoId);
-
-            if (medicoCambio == null)
+        {            
+            if (m == null)
                 return NotFound();
 
-            medicoCambio.Nombre = m.Nombre;
-            medicoCambio.Apellido = m.Apellido;
-            medicoCambio.Matricula = m.Matricula;
-            context.SaveChanges();
-
+            context.Entry(m).State = EntityState.Modified;
+            context.SaveChanges();                        
             return RedirectToAction("Index");
         }
 
