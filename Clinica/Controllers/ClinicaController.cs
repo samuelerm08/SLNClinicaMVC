@@ -38,5 +38,6 @@ namespace Clinica.Controllers
             }
             return View(medico);
         }
+
     }
 }
