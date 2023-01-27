@@ -2,7 +2,7 @@
 using Clinica.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-
+using System.Runtime.InteropServices;
 
 namespace Clinica.Controllers
 {
@@ -17,6 +17,9 @@ namespace Clinica.Controllers
         }
         public IActionResult Index()
         {
+
+            //var medicos = context.Medicos.ToList();
+
             return View();
         }
         [HttpGet]
@@ -37,6 +40,39 @@ namespace Clinica.Controllers
             }
             return View(medico);
         }
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var medico = context.Medicos.Find(id);
+
+            if (medico == null) return NotFound();
+
+            else return View("Delete", medico);
+
+        }
+        [HttpPost]
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+
+            var medico = context.Medicos.Find(id);
+
+            if (medico == null)
+            {
+
+                return NotFound();
+
+            }
+
+            context.Medicos.Remove(medico);
+            context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+
+
     }
 
 
