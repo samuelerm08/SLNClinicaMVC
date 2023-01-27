@@ -9,16 +9,17 @@ namespace Clinica.Controllers
     public class ClinicaController : Controller
     {
         private readonly DbClinicaContext context;
-        public ClinicaController(DbClinicaContext context) 
 
-        {   
-
+        public ClinicaController(DbClinicaContext context)
+        {
             this.context = context;
         }
         public IActionResult Index()
         {
+
             return View();
         }
+
         [HttpGet]
         public ActionResult Create()
         {
@@ -26,6 +27,7 @@ namespace Clinica.Controllers
 
             return View("Create", medico);
         }
+
         [HttpPost]
         public ActionResult Create(Medico medico)
         {
@@ -37,7 +39,19 @@ namespace Clinica.Controllers
             }
             return View(medico);
         }
+
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            var medico = ObtenerUno(id);
+            if (medico == null)
+                return NotFound();
+            else
+                return View("Details", medico);
+        }
+        private Medico ObtenerUno(int id)
+        {
+            return context.Medicos.Find(id);
+        }
     }
-
-
 }
